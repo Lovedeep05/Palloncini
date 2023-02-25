@@ -21,6 +21,9 @@ public class PallonciniFrame extends JFrame {
                     ((Timer)evt.getSource()).stop();
                 }
                 balloon.setLocation((balloon.getLocation().x), balloon.getLocation().y-5);
+                if(balloon.getLocation().y<0){
+                    balloon.setLocation(250, 500);
+                }
                 count++;
             }
         };
@@ -40,7 +43,11 @@ public class PallonciniFrame extends JFrame {
         ImageIcon redBalloon = new ImageIcon("redBalloon.png");
         JLabel palloncino1 = new JLabel(redBalloon);
         palloncino1.setBounds(100,420,30,72);
+
+
         MoveForPlayer(palloncino1);
+        //MoveForPlayer(palloncino2);
+
 
 
         mainPanel.add(palloncino1);
