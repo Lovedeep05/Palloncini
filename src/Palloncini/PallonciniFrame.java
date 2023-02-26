@@ -1,5 +1,5 @@
 package Palloncini;
-
+//ciao mi chiamo singh
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -13,9 +13,9 @@ public class PallonciniFrame extends JFrame {
     private final int FRAME_WIDTH = 500;
     private final int FRAME_HEIGHT = 700;
 
+    private int difficulty = 0;
     public void moveBalloons()
     {
-        int difficulty = 0;
         int delay = 60 - difficulty;
         ActionListener taskPerformer = new ActionListener() {
             @Override
@@ -31,7 +31,7 @@ public class PallonciniFrame extends JFrame {
                     public void mouseClicked(MouseEvent e)
                     {
                         redBallon.setLocation((int)(Math.random() * ((FRAME_WIDTH) + 1)), 500);
-                        difficulty++;
+                        difficulty+=15;
                     }
                 });
 
