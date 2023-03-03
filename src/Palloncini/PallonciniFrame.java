@@ -1,14 +1,14 @@
 package Palloncini;
 
-import org.w3c.dom.ls.LSOutput;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Random;
 
 public class PallonciniFrame extends JFrame {
-    JLabel redBalloon,bombBalloon,hotAirBalloon,punteggioLabel;
+    JLabel sfondo = new JLabel(new ImageIcon("Sfonod.png"));
+    JLabel bombBalloon,hotAirBalloon,punteggioLabel,redBalloon,blueBalloon,greenBalloon,orangeBalloon,purpleBalloon,yellowBalloon, cuore1, cuore2, cuore3;
+    JPanel mainPanel = new JPanel(null);
+    int vite=3;
     int punteggio=0;
 
     private final int FRAME_WIDTH = 500;
@@ -16,6 +16,7 @@ public class PallonciniFrame extends JFrame {
 
     private float difficulty = 3;
     private boolean c;
+
     public void moveBalloons()
     {
         int delay = 60;
@@ -26,6 +27,11 @@ public class PallonciniFrame extends JFrame {
                 moveSingleBalloon(redBalloon);
                 moveSingleBalloon(bombBalloon);
                 moveSingleBalloon(hotAirBalloon);
+                moveSingleBalloon(yellowBalloon);
+                moveSingleBalloon(blueBalloon);
+                moveSingleBalloon(purpleBalloon);
+                moveSingleBalloon(orangeBalloon);
+                moveSingleBalloon(greenBalloon);
             }
 
         };
@@ -42,20 +48,29 @@ public class PallonciniFrame extends JFrame {
         {
             public void mouseClicked(MouseEvent e)
             {
-                balloon.setLocation((int)(Math.random() * ((FRAME_WIDTH) + 1)), FRAME_HEIGHT);
+                balloon.setLocation((int)(Math.random() * ((FRAME_WIDTH-10) + 1)), FRAME_HEIGHT);
                 if(c){
-                    difficulty+=0.2;
+                    difficulty+=0.1;
                     System.out.println(difficulty);
                     c=false;
                     System.out.println(balloon.getName());
                     switch (balloon.getName()){
-                        case "redBalloon":
+                        case "regularBalloon":
                             punteggio++;
                             break;
                         case "hotAirBalloon":
                             punteggio+=3;
                             break;
                         case "bombBalloon":
+                            vite--;
+                            if (vite==2){
+                                sfondo.remove(cuore3);
+                            } else if (vite==1) {
+                                sfondo.remove(cuore2);
+                            } else if (vite==0) {
+                                sfondo.remove(cuore1);
+                                
+                            }
                             punteggio-=5;
                             break;
                     }
@@ -65,20 +80,49 @@ public class PallonciniFrame extends JFrame {
         });
     }
 
-
     public PallonciniFrame() {
+        setLayout(new BorderLayout());
+
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(FRAME_WIDTH,FRAME_HEIGHT);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
 
-        JPanel mainPanel = new JPanel(null);
 
-        mainPanel.setBackground(Color.green);
+
+        cuore1 = new JLabel(new ImageIcon("pngegg.png"));
+        cuore1.setBounds(10,640, 15,15);
+
+        cuore2 = new JLabel(new ImageIcon("pngegg.png"));
+        cuore2.setBounds(30,640, 15,15);
+
+        cuore3 = new JLabel(new ImageIcon("pngegg.png"));
+        cuore3.setBounds(50,640, 15,15);
+
 
         redBalloon = new JLabel(new ImageIcon("redBalloon.png"));
         redBalloon.setBounds((int)(Math.random() * ((FRAME_WIDTH) + 1)),FRAME_HEIGHT,30,72);
-        redBalloon.setName("redBalloon");
+        redBalloon.setName("regularBalloon");
+
+        blueBalloon = new JLabel(new ImageIcon("blueBalloon.png"));
+        blueBalloon.setBounds((int)(Math.random() * ((FRAME_WIDTH) + 1)),FRAME_HEIGHT,30,72);
+        blueBalloon.setName("regularBalloon");
+
+        greenBalloon = new JLabel(new ImageIcon("greenBalloon.png"));
+        greenBalloon.setBounds((int)(Math.random() * ((FRAME_WIDTH) + 1)),FRAME_HEIGHT,30,72);
+        greenBalloon.setName("regularBalloon");
+
+        orangeBalloon = new JLabel(new ImageIcon("orangeBalloon.png"));
+        orangeBalloon.setBounds((int)(Math.random() * ((FRAME_WIDTH) + 1)),FRAME_HEIGHT,30,72);
+        orangeBalloon.setName("regularBalloon");
+
+        yellowBalloon = new JLabel(new ImageIcon("yellowBalloon.png"));
+        yellowBalloon.setBounds((int)(Math.random() * ((FRAME_WIDTH) + 1)),FRAME_HEIGHT,30,72);
+        yellowBalloon.setName("regularBalloon");
+
+        purpleBalloon = new JLabel(new ImageIcon("purpleBalloon.png"));
+        purpleBalloon.setBounds((int)(Math.random() * ((FRAME_WIDTH) + 1)),FRAME_HEIGHT,30,72);
+        purpleBalloon.setName("regularBalloon");
 
         bombBalloon = new JLabel(new ImageIcon("bombBalloon.png"));
         bombBalloon.setBounds((int)(Math.random() * ((FRAME_WIDTH) + 1)),FRAME_HEIGHT,150,150);
@@ -94,11 +138,25 @@ public class PallonciniFrame extends JFrame {
         punteggioLabel = new JLabel("Punteggio: "+punteggio);
         punteggioLabel.setBounds(0,0,150,15);
 
-        mainPanel.add(redBalloon);
-        mainPanel.add(bombBalloon);
-        mainPanel.add(hotAirBalloon);
 
-        mainPanel.add(punteggioLabel);
+        sfondo.setSize(498, 698);
+
+
+
+        sfondo.add(cuore1);
+        sfondo.add(cuore2);
+        sfondo.add(cuore3);
+        sfondo.add(redBalloon);
+        sfondo.add(bombBalloon);
+        sfondo.add(hotAirBalloon);
+        sfondo.add(greenBalloon);
+        sfondo.add(orangeBalloon);
+        sfondo.add(purpleBalloon);
+        sfondo.add(yellowBalloon);
+        sfondo.add(blueBalloon);
+        sfondo.add(punteggioLabel);
+
+        mainPanel.add(sfondo);
 
         this.add(mainPanel);
         this.setVisible(true);
