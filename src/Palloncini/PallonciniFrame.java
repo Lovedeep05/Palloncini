@@ -5,8 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class PallonciniFrame extends JFrame {
-    JLabel sfondo = new JLabel(new ImageIcon("Sfonod.png"));
-    JLabel bombBalloon,hotAirBalloon,punteggioLabel,redBalloon,blueBalloon,greenBalloon,orangeBalloon,purpleBalloon,yellowBalloon, cuore1, cuore2, cuore3;
+
+    JLabel sfondo,bombBalloon,hotAirBalloon,punteggioLabel,redBalloon,blueBalloon,greenBalloon,orangeBalloon,purpleBalloon,yellowBalloon, cuore1, cuore2, cuore3;
     JPanel mainPanel = new JPanel(null);
     int vite=3;
     int punteggio=0;
@@ -89,6 +89,7 @@ public class PallonciniFrame extends JFrame {
         this.setResizable(false);
 
 
+        sfondo = new JLabel(new ImageIcon("Sfonod.png"));
 
         cuore1 = new JLabel(new ImageIcon("pngegg.png"));
         cuore1.setBounds(10,640, 15,15);
