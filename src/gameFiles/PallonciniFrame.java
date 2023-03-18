@@ -1,21 +1,27 @@
-package gameFiles;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.util.ArrayList;
 
 public class PallonciniFrame extends JFrame {
+    //TODO label con la difficlota sia easy, sia il numero
+    //TODO 10 palloncini massimo mancabili poi si perde una vita, si possono recuperare con il palloncino cuore
 
-    JLabel sfondo,bombBalloon,hotAirBalloon,punteggioLabel,redBalloon,blueBalloon,greenBalloon,orangeBalloon,purpleBalloon,yellowBalloon, cuore1, cuore2, cuore3;
+    ArrayList<JLabel> lives = new ArrayList<JLabel>(3);
+
+    JLabel sfondo,bombBalloon,hotAirBalloon,punteggioLabel,redBalloon,blueBalloon,greenBalloon,orangeBalloon,purpleBalloon,yellowBalloon;
     JPanel mainPanel = new JPanel(null);
-    int vite=3;
-    int punteggio=0;
+    Integer vite=3;
+    Integer punteggio=0;
 
     private final int FRAME_WIDTH = 500;
     private final int FRAME_HEIGHT = 700;
 
     private float difficulty = 3;
     private boolean c;
+    BufferedWriter writer = new BufferedWriter(new FileWriter("punteggio.txt"));
+
 
     public void moveBalloons()
     {
@@ -52,8 +58,8 @@ public class PallonciniFrame extends JFrame {
             {
                 balloon.setLocation((int)(Math.random() * ((FRAME_WIDTH-10) + 1)), FRAME_HEIGHT);
                 if(c){
-                    difficulty+=0.1;
-                    System.out.println(difficulty);
+                    difficulty+=(0.1*WelcomeFrame.getDifficultyMode());
+                    System.out.println("Difficolta': "+Math.floor(difficulty)+"     Mode: "+WelcomeFrame.getDifficultyMode());
                     c=false;
                     System.out.println(balloon.getName());
                     switch (balloon.getName()){
@@ -65,15 +71,20 @@ public class PallonciniFrame extends JFrame {
                             break;
                         case "bombBalloon":
                             vite--;
-                            if (vite==2){
-                                sfondo.remove(cuore3);
-                            } else if (vite==1) {
-                                sfondo.remove(cuore2);
-                            } else if (vite==0) {
-                                sfondo.remove(cuore1);
-                                
-                            }
                             punteggio-=5;
+                            lives.get(lives.size()-1).setVisible(false);
+                            lives.remove(lives.size()-1);
+                            if(lives.size()==0) {
+                                try {
+                                    System.out.println("Punteggio: " + punteggio);
+                                    writer.write(punteggio.toString());
+                                    writer.close();
+                                    Main.gameFinished();
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            }
+                            //TODO palloncino che rigenera i cuori
                             break;
                     }
                     punteggioLabel.setText("Punteggio: "+punteggio);
@@ -82,25 +93,14 @@ public class PallonciniFrame extends JFrame {
         });
     }
 
-    public PallonciniFrame() {
-        setLayout(new BorderLayout());
-
+    public PallonciniFrame() throws IOException {
+        //setLayout(new BorderLayout());
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(FRAME_WIDTH,FRAME_HEIGHT);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-
-
         sfondo = new JLabel(new ImageIcon("Sfonod.png"));
 
-        cuore1 = new JLabel(new ImageIcon("pngegg.png"));
-        cuore1.setBounds(FRAME_WIDTH-50,10, 30,26);
-
-        cuore2 = new JLabel(new ImageIcon("pngegg.png"));
-        cuore2.setBounds(FRAME_WIDTH-80,10, 30,26);
-
-        cuore3 = new JLabel(new ImageIcon("pngegg.png"));
-        cuore3.setBounds(FRAME_WIDTH-110,10, 30,26);
 
         //TODO add a arraylist of hearths to increase how many you can have
 
@@ -139,19 +139,12 @@ public class PallonciniFrame extends JFrame {
         hotAirBalloon.setBounds((int)(Math.random() * ((FRAME_WIDTH) + 1)),FRAME_HEIGHT,100,100);
 
 
-
-
         punteggioLabel = new JLabel("Punteggio: "+punteggio);
         punteggioLabel.setBounds(0,0,150,15);
-
 
         sfondo.setSize(498, 698);
 
 
-
-        sfondo.add(cuore1);
-        sfondo.add(cuore2);
-        sfondo.add(cuore3);
         sfondo.add(redBalloon);
         sfondo.add(bombBalloon);
         sfondo.add(hotAirBalloon);
@@ -161,6 +154,12 @@ public class PallonciniFrame extends JFrame {
         sfondo.add(yellowBalloon);
         sfondo.add(blueBalloon);
         sfondo.add(punteggioLabel);
+
+        for(int i = 0; i<vite;i++) {
+            lives.add(new JLabel(new ImageIcon("pngegg.png")));
+            lives.get(i).setBounds(FRAME_WIDTH-40-(i*20),5, 30,26);
+            sfondo.add(lives.get(i));
+        }
 
         mainPanel.add(sfondo);
 

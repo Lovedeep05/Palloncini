@@ -1,5 +1,3 @@
-package gameFiles;
-
 import javax.swing.*;
 
 public class Palloncino {
